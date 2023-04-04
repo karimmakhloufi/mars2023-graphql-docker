@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import { useQuery, gql } from "@apollo/client";
 import "./App.css";
 import Wilder, { IWilderProps } from "./components/Wilder";
 import AddGradeForm from "./components/AddGradeForm";
@@ -21,6 +20,21 @@ interface IWilderFromAPI {
   grades: IGradeFromAPI[];
 }
 
+const GET_WILDERS = gql`
+  query GetWilders {
+    wilders {
+      id
+      name
+      grades {
+        grade
+        skill {
+          name
+        }
+      }
+    }
+  }
+`;
+
 const formatWildersFromApi = (wilders: IWilderFromAPI[]): IWilderProps[] =>
   wilders.map((wilder) => {
     return {
@@ -33,19 +47,12 @@ const formatWildersFromApi = (wilders: IWilderFromAPI[]): IWilderProps[] =>
   });
 
 function App() {
-  const [wilders, setWilders] = useState<IWilderProps[]>([]);
-  const [lastUpdate, setLastUpdate] = useState(new Date().getTime());
-  useEffect(() => {
-    const fetchWilders = async () => {
-      const wilderFromApi = await axios.get<IWilderFromAPI[]>(
-        "http://localhost:5000/api/wilder"
-      );
-      console.log(wilderFromApi);
-      setWilders(formatWildersFromApi(wilderFromApi.data));
-    };
-    fetchWilders();
-  }, [lastUpdate]);
+  const { loading, error, data } = useQuery(GET_WILDERS);
 
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error : {error.message}</p>;
+
+  const wilders = formatWildersFromApi(data.wilders);
   return (
     <div>
       <header>
@@ -55,7 +62,7 @@ function App() {
       </header>
       <main className="container">
         <AddGradeForm />
-        <AddWilderForm setLastUpdate={setLastUpdate} />
+        <AddWilderForm />
         <h2>Wilders</h2>
         <section className="card-row">
           {wilders.map((wilder) => {
