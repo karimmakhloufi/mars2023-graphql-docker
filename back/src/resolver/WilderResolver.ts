@@ -6,7 +6,9 @@ import dataSource from "../utils";
 class WilderResolver {
   @Query(() => [Wilder])
   async wilders(): Promise<Wilder[]> {
-    const result = await dataSource.getRepository(Wilder).find();
+    const result = await dataSource
+      .getRepository(Wilder)
+      .find({ relations: { grades: { skill: true } } });
     return result;
   }
 }
