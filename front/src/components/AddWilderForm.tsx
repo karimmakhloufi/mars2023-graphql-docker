@@ -1,22 +1,34 @@
 import { useState } from "react";
-import axios from "axios";
+import { useMutation, gql } from "@apollo/client";
+import { GET_WILDERS_AND_SKILLS } from "../App";
 
-const AddWilderForm = ({
-  setLastUpdate,
-}: {
-  setLastUpdate: React.Dispatch<React.SetStateAction<number>>;
-}) => {
+const ADD_WILDER = gql`
+  mutation Mutation($name: String!) {
+    addWilder(name: $name) {
+      id
+      name
+    }
+  }
+`;
+
+const AddWilderForm = () => {
   const [wilderName, setName] = useState("");
-  const [city, setCity] = useState("");
+  const [addNewWilder, { data, error, loading }] = useMutation(ADD_WILDER, {
+    refetchQueries: [GET_WILDERS_AND_SKILLS],
+  });
+  if (loading) {
+    return <p>Loading</p>;
+  }
+  if (error) {
+    console.log(error);
+    return <p>Error</p>;
+  }
+  console.log(data);
   return (
     <form
       onSubmit={async (e) => {
         e.preventDefault();
-        await axios.post("http://localhost:5000/api/wilder", {
-          name: wilderName,
-          city: city,
-        });
-        setLastUpdate(new Date().getTime());
+        addNewWilder({ variables: { name: wilderName } });
       }}
     >
       <h3>Add Wilder</h3>
@@ -25,14 +37,6 @@ const AddWilderForm = ({
         value={wilderName}
         onChange={(e) => {
           setName(e.target.value);
-        }}
-      />
-      <br />
-      <label>City </label>
-      <input
-        value={city}
-        onChange={(e) => {
-          setCity(e.target.value);
         }}
       />
       <br />
