@@ -1,6 +1,7 @@
-import axios from "axios";
+import { gql, useMutation } from "@apollo/client";
 import blank_profile from "../assets/profile.png";
 import Skill, { ISkillProps } from "./Skill";
+import { GET_WILDERS_AND_SKILLS } from "../App";
 
 export interface IWilderProps {
   name: string;
@@ -8,15 +9,33 @@ export interface IWilderProps {
   skills: ISkillProps[];
 }
 
-const handleDelete = (id: number) => {
-  axios.delete("http://localhost:5000/api/wilder/" + id);
-};
+const DELETE_WILDER = gql`
+  mutation Mutation($deleteWilderId: String!) {
+    deleteWilder(id: $deleteWilderId)
+  }
+`;
+
 const Wilder = ({ name, id, skills }: IWilderProps) => {
+  const [deleteWilder, { data, loading, error }] = useMutation(DELETE_WILDER, {
+    refetchQueries: [GET_WILDERS_AND_SKILLS],
+  });
+  if (loading) {
+    return <p>Loading</p>;
+  }
+  if (error) {
+    console.log(error);
+    return <p>Error</p>;
+  }
+  console.log(data);
   return (
     <article className="card">
       <img src={blank_profile} alt="Jane Doe Profile" />
       <h3>{name}</h3>
-      <button onClick={() => handleDelete(id)}>Delete</button>
+      <button
+        onClick={() => deleteWilder({ variables: { deleteWilderId: id } })}
+      >
+        Delete
+      </button>
       <p>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
         tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
