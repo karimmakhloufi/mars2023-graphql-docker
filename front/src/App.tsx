@@ -1,7 +1,6 @@
 import { useQuery, gql } from "@apollo/client";
 import "./App.css";
 import Wilder, { IWilderProps } from "./components/Wilder";
-import AddGradeForm from "./components/AddGradeForm";
 import AddWilderForm from "./components/AddWilderForm";
 
 interface ISkillFromAPI {
@@ -62,11 +61,10 @@ function App() {
     <div>
       <header>
         <div className="container">
-          <h1>Wilders Book</h1>
+          <h1>Wilders Book reload is working ?</h1>
         </div>
       </header>
       <main className="container">
-        <AddGradeForm />
         <AddWilderForm />
         <h2>Wilders</h2>
         <section className="card-row">
