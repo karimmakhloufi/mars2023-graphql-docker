@@ -1,9 +1,10 @@
-import { Query, Resolver, Mutation, Arg } from "type-graphql";
+import { Query, Resolver, Mutation, Arg, Authorized } from "type-graphql";
 import { Wilder } from "../entity/Wilder";
 import dataSource from "../utils";
 
 @Resolver()
 class WilderResolver {
+  @Authorized()
   @Query(() => [Wilder])
   async wilders(): Promise<Wilder[]> {
     const result = await dataSource
