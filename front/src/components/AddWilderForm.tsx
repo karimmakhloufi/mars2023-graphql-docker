@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import { useMutation, gql } from "@apollo/client";
-import { GET_WILDERS_AND_SKILLS } from "../App";
+import { GET_WILDERS_AND_SKILLS } from "../components/HomePage";
 
 const ADD_WILDER = gql`
   mutation Mutation($name: String!) {

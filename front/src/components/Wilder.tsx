@@ -1,7 +1,7 @@
 import { gql, useMutation } from "@apollo/client";
 import blank_profile from "../assets/profile.png";
 import Skill, { ISkillProps } from "./Skill";
-import { GET_WILDERS_AND_SKILLS } from "../App";
+import { GET_WILDERS_AND_SKILLS } from "../components/HomePage";
 
 export interface IWilderProps {
   name: string;

@@ -26,8 +26,14 @@ const start = async (): Promise<void> => {
     schema: typeGraphQLgeneratedSchema,
     context: ({ req }) => {
       console.log("req", req.headers.authorization);
-      if (req.headers.authorization !== undefined) {
-        const payload = jwt.verify(req.headers.authorization, "supersecretkey");
+      if (
+        req.headers.authorization !== undefined &&
+        req.headers.authorization !== ""
+      ) {
+        const payload = jwt.verify(
+          req.headers.authorization.split("Bearer ")[1],
+          "supersecretkey"
+        );
         return payload;
       }
       return {};
