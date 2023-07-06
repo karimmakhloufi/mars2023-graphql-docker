@@ -3,7 +3,7 @@ import { gql, useLazyQuery } from "@apollo/client";
 import { useState } from "react";
 
 const LOGIN = gql`
-  query Query($password: String!, $email: String!) {
+  query Login($password: String!, $email: String!) {
     login(password: $password, email: $email)
   }
 `;

@@ -10,7 +10,7 @@ export interface IWilderProps {
 }
 
 const DELETE_WILDER = gql`
-  mutation Mutation($deleteWilderId: String!) {
+  mutation DeleteWilder($deleteWilderId: String!) {
     deleteWilder(id: $deleteWilderId)
   }
 `;

@@ -1,16 +1,17 @@
 import { useState } from "react";
+import { useMutation } from "@apollo/client";
+import { gql } from "../__generated__";
 
-import { useMutation, gql } from "@apollo/client";
 import { GET_WILDERS_AND_SKILLS } from "../components/HomePage";
 
-const ADD_WILDER = gql`
-  mutation Mutation($name: String!) {
+const ADD_WILDER = gql(`
+  mutation AddWilder($name: String!) {
     addWilder(name: $name) {
       id
       name
     }
   }
-`;
+`);
 
 const AddWilderForm = () => {
   const [wilderName, setName] = useState("");
